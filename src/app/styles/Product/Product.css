@@ -1,0 +1,132 @@
+.product {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-brown-dark);
+  color: var(--color-gold-medium);
+  width: 260px;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.product:hover {
+  border-color: var(--color-gold-medium);
+}
+
+.product-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.product:hover .product-image {
+  transform: scale(1.05);
+}
+
+.product-category {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-family: var(--font-common);
+  font-size: 11px;
+  color: var(--color-gold-light);
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 2px 8px;
+}
+
+.product-info {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.product-name {
+  font-family: var(--font-common);
+  font-size: 16px;
+  color: var(--color-gold-light);
+  margin: 0;
+}
+
+.product-price {
+  font-family: var(--font-title);
+  font-size: 22px;
+  color: var(--color-gold-medium);
+  margin: 0;
+}
+
+.product-stock {
+  font-family: var(--font-common);
+  font-size: 12px;
+  color: var(--color-glow);
+  margin: 0;
+  opacity: 0.7;
+}
+
+.product-description {
+  font-family: var(--font-common);
+  font-size: 13px;
+  color: var(--color-glow);
+  margin: 0;
+  opacity: 0.8;
+  line-height: 1.5;
+}
+
+.product-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+  border-top: 1px solid var(--color-brown-dark);
+  padding-top: 0.6rem;
+}
+
+.product-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.product-detail-label {
+  font-family: var(--font-common);
+  font-size: 11px;
+  color: var(--color-gold-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.product-detail-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.product-detail-list li {
+  font-family: var(--font-common);
+  font-size: 12px;
+  color: var(--color-glow);
+  opacity: 0.8;
+}
+
+.product-detail-list li:not(:last-child)::after {
+  content: '·';
+  margin-left: 0.3rem;
+  opacity: 0.5;
+}
+
+.product-detail-value {
+  font-family: var(--font-common);
+  font-size: 12px;
+  color: var(--color-glow);
+  opacity: 0.8;
+}

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Tangerine, Playfair_Display } from "next/font/google";
+import Providers from "./providers";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -9,6 +10,17 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const tangerine = Tangerine({
+  variable: "--font-title",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
+const playfairDisplay = Playfair_Display({
+  variable: "--font-common",
   subsets: ["latin"],
 });
 
@@ -25,9 +37,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${tangerine.variable} ${playfairDisplay.variable} antialiased`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

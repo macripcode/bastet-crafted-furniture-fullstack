@@ -1,0 +1,130 @@
+.filter {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 1.2rem 2rem;
+  border-bottom: 1px solid var(--color-brown-dark);
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.filter-label {
+  font-family: var(--font-common);
+  font-size: 11px;
+  color: var(--color-gold-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.filter-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.filter-option {
+  background: none;
+  border: 1px solid var(--color-brown-dark);
+  color: var(--color-glow);
+  font-family: var(--font-common);
+  font-size: 12px;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  transition: border-color 0.3s, color 0.3s;
+  opacity: 0.8;
+}
+
+.filter-option:hover {
+  border-color: var(--color-gold-medium);
+  color: var(--color-gold-light);
+  opacity: 1;
+}
+
+.filter-option--active {
+  border-color: var(--color-gold-medium);
+  color: var(--color-gold-medium);
+  opacity: 1;
+}
+
+.filter-price {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-price-field {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-brown-dark);
+  padding: 0.25rem 0.5rem;
+  transition: border-color 0.3s;
+}
+
+.filter-price-field:focus-within {
+  border-color: var(--color-gold-medium);
+}
+
+.filter-price-sign {
+  font-family: var(--font-common);
+  font-size: 12px;
+  color: var(--color-gold-medium);
+}
+
+.filter-price-input {
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--color-glow);
+  font-family: var(--font-common);
+  font-size: 12px;
+  width: 64px;
+}
+
+.filter-price-input::placeholder {
+  color: var(--color-glow);
+  opacity: 0.4;
+}
+
+.filter-price-separator {
+  color: var(--color-brown-dark);
+  font-size: 12px;
+}
+
+.filter-select {
+  background: none;
+  border: 1px solid var(--color-brown-dark);
+  color: var(--color-glow);
+  font-family: var(--font-common);
+  font-size: 12px;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.filter-select:focus {
+  border-color: var(--color-gold-medium);
+}
+
+.filter-select option {
+  background-color: var(--color-black);
+  color: var(--color-glow);
+}
+
+@media (max-width: 768px) {
+  .filter {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.2rem;
+  }
+}
