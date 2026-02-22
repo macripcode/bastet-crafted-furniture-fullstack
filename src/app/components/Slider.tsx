@@ -24,9 +24,9 @@ function Slider({ slides, autoPlay = true, interval = 4000 }: SliderProps) {
     setCurrent((prev) => (prev + 1) % slides.length);
   }, [slides.length]);
 
-  const prev = () => {
+  const prev = useCallback(() => {
     setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
-  };
+  }, [slides.length]);
 
   useEffect(() => {
     if (!autoPlay || paused) return;

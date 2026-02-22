@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import '../styles/Filter/Filter.css';
 
 interface FilterProps {
@@ -98,4 +99,4 @@ function Filter({
   );
 }
 
-export default Filter;
+export default memo(Filter);

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Product from './Product';
 import { fetchProducts } from '../services/products';
@@ -35,32 +35,33 @@ function ProductList({
     if (products.length > 0) {
       onCategoriesLoaded?.([...new Set(products.map((p) => p.category))]);
     }
-  }, [products]);
+  }, [products, onCategoriesLoaded]);
 
-  // Volver a la primera página cuando cambian los filtros
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedCategory, minPrice, maxPrice, sortBy]);
 
-  const filtered = products
-    .filter((p) => selectedCategory === '' || p.category === selectedCategory)
-    .filter((p) => minPrice === 0 || p.price >= minPrice)
-    .filter((p) => maxPrice === 0 || p.price <= maxPrice)
-    .sort((a, b) => {
-      if (sortBy === 'price_asc') return a.price - b.price;
-      if (sortBy === 'price_desc') return b.price - a.price;
-      if (sortBy === 'name_asc') return a.name.localeCompare(b.name);
-      if (sortBy === 'name_desc') return b.name.localeCompare(a.name);
-      return 0;
-    });
+  const filtered = useMemo(() =>
+    products
+      .filter((p) => selectedCategory === '' || p.category === selectedCategory)
+      .filter((p) => minPrice === 0 || p.price >= minPrice)
+      .filter((p) => maxPrice === 0 || p.price <= maxPrice)
+      .sort((a, b) => {
+        if (sortBy === 'price_asc') return a.price - b.price;
+        if (sortBy === 'price_desc') return b.price - a.price;
+        if (sortBy === 'name_asc') return a.name.localeCompare(b.name);
+        if (sortBy === 'name_desc') return b.name.localeCompare(a.name);
+        return 0;
+      }),
+    [products, selectedCategory, minPrice, maxPrice, sortBy]
+  );
 
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentProducts = filtered.slice(startIndex, startIndex + itemsPerPage);
+  const currentProducts = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-  const goToPage = (page: number) => {
+  const goToPage = useCallback((page: number) => {
     if (page >= 1 && page <= totalPages) setCurrentPage(page);
-  };
+  }, [totalPages]);
 
   if (isLoading) {
     return <p style={{ color: 'var(--color-glow)', padding: '2rem' }}>Cargando productos...</p>;

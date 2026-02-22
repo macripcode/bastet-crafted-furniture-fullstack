@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import type { Measures } from '../types/product';
 import '../styles/Product/Product.css';
 
@@ -14,7 +15,7 @@ interface ProductProps {
   measures: Measures;
 }
 
-function Product({ id, name, price, stock, image_url, category, description, characteristics, materials, measures }: ProductProps) {
+const Product = memo(function Product({ id, name, price, stock, image_url, category, description, characteristics, materials, measures }: ProductProps) {
   const measuresDisplay = `${measures.width_cm} x ${measures.height_cm} x ${measures.depth_cm} cm${measures.weight_kg ? ` · ${measures.weight_kg} kg` : ''}`;
 
   return (
@@ -52,6 +53,6 @@ function Product({ id, name, price, stock, image_url, category, description, cha
       </div>
     </div>
   );
-}
+});
 
 export default Product;
