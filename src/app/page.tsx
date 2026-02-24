@@ -1,48 +1,64 @@
-'use client';
+// Server Component — se ejecuta en el servidor en cada request.
+//
+// Para cambiar a ISR y revalidar cada 60 s, descomenta la línea siguiente
+// y elimina los `cache: 'no-store'` de las funciones de fetch:
+// export const revalidate = 60;
 
-import { useState } from 'react';
+import type { Metadata } from 'next';
 import Navbar from './components/Navbar';
-import Slider from './components/Slider';
-import Filter from './components/Filter';
-import AboutUs from './components/AboutUs';
+import SliderClient, { type Banner } from './components/SliderClient';
 import ProductList from './components/ProductList';
+import AboutUs from './components/AboutUs';
+import type { Product } from './types/product';
 
-const slides = [
-  { id: 1, image_url: '/slider/slide1.jpg', title: 'Mesa Artesanal', subtitle: 'Madera de roble macizo' },
-  { id: 2, image_url: '/slider/slide2.jpg', title: 'Silla Colonial', subtitle: 'Diseño clásico, confort moderno' },
-  { id: 3, image_url: '/slider/slide3.jpg', title: 'Vitrina Elegante', subtitle: 'Exhibe lo que más valoras' },
-];
+export const metadata: Metadata = {
+  title: 'Bastet Crafted Furniture | Muebles Artesanales Únicos',
+  description:
+    'Descubrí nuestra colección de muebles artesanales elaborados a mano con maderas nobles y materiales de la más alta calidad. Elegancia atemporal para tu hogar.',
+  openGraph: {
+    title: 'Bastet Crafted Furniture',
+    description: 'Muebles artesanales únicos, elaborados con maderas nobles.',
+    type: 'website',
+  },
+};
 
-export default function Home() {
-  const [categories, setCategories] = useState<string[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(0);
-  const [sortBy, setSortBy] = useState('');
+async function getBanners(): Promise<Banner[]> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/banners`, {
+    cache: 'no-store',
+    headers: { Authorization: `Bearer ${process.env.API_SECRET_TOKEN}` },
+  });
+
+  if (!res.ok) return [];
+  return res.json();
+}
+
+async function getFeaturedProducts(): Promise<Product[]> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/products?featured=true`,
+    {
+      cache: 'no-store',
+      headers: { Authorization: `Bearer ${process.env.API_SECRET_TOKEN}` },
+    }
+  );
+
+  if (!res.ok) return [];
+  return res.json();
+}
+
+export default async function Home() {
+  // Ambas requests corren en paralelo en el servidor
+  const [banners, products] = await Promise.all([
+    getBanners(),
+    getFeaturedProducts(),
+  ]);
 
   return (
     <>
       <Navbar />
-      <Slider slides={slides} />
-      <Filter
-        categories={categories}
-        selectedCategory={selectedCategory}
-        onCategoryChange={setSelectedCategory}
-        minPrice={minPrice}
-        maxPrice={maxPrice}
-        onMinPriceChange={setMinPrice}
-        onMaxPriceChange={setMaxPrice}
-        sortBy={sortBy}
-        onSortChange={setSortBy}
-      />
-      <ProductList
-        itemsPerPage={8}
-        selectedCategory={selectedCategory}
-        minPrice={minPrice}
-        maxPrice={maxPrice}
-        sortBy={sortBy}
-        onCategoriesLoaded={setCategories}
-      />
+      {/* Client Component: recibe banners ya resueltos como prop serializable */}
+      <SliderClient banners={banners} />
+      {/* Server Component: renderiza el HTML de los productos directamente */}
+      <ProductList products={products} />
       <AboutUs />
     </>
   );
