@@ -1,15 +1,14 @@
-// Server Component — se ejecuta en el servidor en cada request.
-//
-// Para cambiar a ISR y revalidar cada 60 s, descomenta la línea siguiente
-// y elimina los `cache: 'no-store'` de las funciones de fetch:
+// Server Component — SSR por request.
+// Para ISR, descomenta la siguiente línea y elimina los cache: 'no-store':
 // export const revalidate = 60;
 
 import type { Metadata } from 'next';
-import Navbar from './components/Navbar';
-import SliderClient, { type Banner } from './components/SliderClient';
-import ProductList from './components/ProductList';
-import AboutUs from './aboutus/page';
-import type { Product } from './types/product';
+import Navbar from '../components/Navbar';
+import SliderClient, { type Banner } from '../components/SliderClient';
+import Filter from '../components/Filter';
+import ProductList from '../components/ProductList';
+import AboutUs from '../components/AboutUs';
+import type { Product } from '../types/product';
 
 export const metadata: Metadata = {
   title: 'Bastet Crafted Furniture | Muebles Artesanales Únicos',
@@ -45,8 +44,7 @@ async function getFeaturedProducts(): Promise<Product[]> {
   return res.json();
 }
 
-export default async function Home() {
-  // Ambas requests corren en paralelo en el servidor
+export default async function HomePage() {
   const [banners, products] = await Promise.all([
     getBanners(),
     getFeaturedProducts(),
@@ -54,10 +52,12 @@ export default async function Home() {
 
   return (
     <>
-      {/*<Navbar />*/}
-      {/*<SliderClient banners={banners} />*/}
-      {/*<ProductList products={products} />*/}
-      {/*<AboutUs />*/}
+      <Navbar />
+      <SliderClient banners={banners} />
+      {/* Filter es Client Component — conectarlo requiere mover el estado a un wrapper client */}
+      {/* <Filter ... /> */}
+      <ProductList products={products} />
+      <AboutUs />
     </>
   );
 }
